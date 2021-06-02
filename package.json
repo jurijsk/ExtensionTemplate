@@ -1,0 +1,42 @@
+{
+	"name": "copycan.code",
+	"private": true,
+	"sideEffects": false,
+	"version": "0.1.0",
+	"description": "Project Copycan",
+	"scripts": {
+		"prebuild": "attrib -R build/*.* /s",
+		"build": "cross-env TS_NODE_PROJECT=\"build-scripts/tsconfig.json\" webpack --env production",
+		"postbuild": "attrib +R build/*.* /s",
+		"dev": "cross-env TS_NODE_PROJECT=\"build-scripts/tsconfig.json\" webpack",
+		"prewatch": "attrib -R assembly/*.* /s",
+		"watch": "cross-env TS_NODE_PROJECT=\"build-scripts/tsconfig.json\" webpack -w",
+		"postwatch": "attrib +R assembly/*.* /s"
+	},
+	"author": "Jurijs Kovzels",
+	"license": "look elsewhere",
+	"devDependencies": {
+		"@types/chrome": "^0.0.133",
+		"@types/mini-css-extract-plugin": "^1.2.2",
+		"@types/node": "^14.14.31",
+		"@types/webpack": "^4.41.26",
+		"@types/webpack-dev-server": "^3.11.1",
+		"copy-webpack-plugin": "^8.0.0",
+		"cross-env": "^7.0.3",
+		"css-loader": "^5.1.1",
+		"html-webpack-plugin": "^5.3.0",
+		"mini-css-extract-plugin": "^1.3.9",
+		"node-sass": "^5.0.0",
+		"sass-loader": "^11.0.1",
+		"style-loader": "^2.0.0",
+		"svgo-loader": "^3.0.0",
+		"ts-loader": "^8.0.17",
+		"ts-node": "^9.1.1",
+		"typescript": "^4.2.3",
+		"webpack": "^5.24.3",
+		"webpack-cli": "^4.5.0",
+		"webpack-dev-server": "^3.11.2",
+		"webpack-extension-reloader": "https://github.com/jkovzels/webpack-extension-reloader.git"
+	},
+	"dependencies": {}
+}

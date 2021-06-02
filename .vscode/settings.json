@@ -1,0 +1,13 @@
+{
+	"search.collapseResults": "auto",
+	"search.exclude": {
+		"assembly": true,
+		"build": true,
+		"yarn.lock": true
+	},
+	"debug.javascript.autoAttachFilter": "onlyWithFlag",
+	"files.exclude": {
+		"assembly": true,
+		"build": true
+	}
+}
