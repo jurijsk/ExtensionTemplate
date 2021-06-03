@@ -17,9 +17,8 @@ chrome.runtime.onConnect.addListener(function(port: chrome.runtime.Port){
 });
 
 let onTabActivated = function onTabActivated(info: chrome.tabs.TabActiveInfo){
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs: chrome.tabs.Tab[]) {
-		chrome.tabs.sendMessage(tabs[0].id || 0, {type: MessageTypes.SendSelection});
-	});
+
+	chrome.tabs.sendMessage(info.tabId, {type: MessageTypes.SendSelection});
 	
 }
 
@@ -50,7 +49,7 @@ let updateBadge = function updateBadge(selection: SelectionObj){
 	if(len == 0) {
 		text = '';
 	} else if(len <= 999) {
-		if(len >= 260 && len < 280) {
+		if(len >= 240 && len < 280) {
 			color = '#FF6500';
 		} else if(len == 280) {
 			color = '#FF0000';
