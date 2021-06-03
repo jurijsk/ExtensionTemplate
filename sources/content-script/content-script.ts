@@ -6,8 +6,6 @@ import {SelectionObj} from '../SelectionObj';
 export class CountStarter {
 
 	constructor() {
-		console.log('InjectionStarter started.');
-		// addEventListener version
 		document.addEventListener('selectionchange', () => {
 			console.log("sending message with count: ", window.getSelection()?.toString().length);
 			sendSelection();
@@ -16,10 +14,6 @@ export class CountStarter {
 		let dispatchMessage = function dispatchMessage(message: RuntimeMessage
 			, sender: chrome.runtime.MessageSender
 			, sendResponse: (response?: any) => void) {
-
-			console.log(sender.tab ?
-				"from a content script:" + sender.tab.url :
-				"from the extension");
 
 			if(message.type == MessageTypes.SendSelection) {
 				sendSelection();

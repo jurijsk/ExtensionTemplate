@@ -62,6 +62,7 @@ export default function configBuilder(env: ConfigEnv) {
 		},
 		context: paths.rootDir,
 		entry: {
+			popup: {import: path.join(paths.srcDir, "popup.tsx")},
 			background: { import: path.join(paths.srcDir, "background/background.ts") },
 			'content-script': {import: path.join(paths.srcDir, "content-script/content-script.ts")}
 		},
@@ -111,6 +112,12 @@ export default function configBuilder(env: ConfigEnv) {
 			extensions: ['.tsx', '.ts', '.js'],
 		},
 		plugins: [
+			new HtmlWebpackPlugin({
+				filename: 'popup.html',
+				template: paths.popupHtml,
+				inject: false,
+				minify: false
+			}),
 			new MiniCssExtractPlugin({filename: "[name].css"}),
 			new CopyWebpackPlugin({
 				patterns: [

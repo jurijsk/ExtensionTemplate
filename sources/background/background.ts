@@ -3,13 +3,15 @@ import {RuntimeMessage} from '../RuntimeMessage';
 import {SelectionObj} from '../SelectionObj';
 
 
-console.log("coming at you from background..");
 chrome.runtime.onStartup.addListener(function() {
 	console.log("coming at you from background:onStartup");
 	chrome.browserAction.setBadgeBackgroundColor({color: "#A9FFAD"});
 	chrome.browserAction.setBadgeText({ text: "   0"});
+});
 
-})
+chrome.tabs.onUpdated.addListener(function() {
+	console.log(arguments)
+});
 
 
 chrome.runtime.onConnect.addListener(function(port: chrome.runtime.Port){
@@ -17,9 +19,7 @@ chrome.runtime.onConnect.addListener(function(port: chrome.runtime.Port){
 });
 
 let onTabActivated = function onTabActivated(info: chrome.tabs.TabActiveInfo){
-
 	chrome.tabs.sendMessage(info.tabId, {type: MessageTypes.SendSelection});
-	
 }
 
 
@@ -30,13 +30,11 @@ let dispatchMessage = function dispatchMessage(message: RuntimeMessage
 	, sender: chrome.runtime.MessageSender
 	, sendResponse: (response?: any) => void){
 
-	console.log(sender.tab ?
-		"from a content script:" + sender.tab.url :
-		"from the extension");
-
 	if(message.type == MessageTypes.Selection) {
 		let response = updateBadge(message.selection as SelectionObj);
 		sendResponse(response);
+	} else if (message.type == MessageTypes.TabBlur){
+		updateBadge({text: ''});
 	}
 }
 chrome.runtime.onMessage.addListener(dispatchMessage);
@@ -62,6 +60,5 @@ let updateBadge = function updateBadge(selection: SelectionObj){
 	chrome.browserAction.setTitle({title: `Count: ${len} characters selected.`});
 	return {msg: 'badge text: ' + text}
 }
-
 
 export {}
