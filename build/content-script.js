@@ -2,53 +2,35 @@
 /******/ 	"use strict";
 var __webpack_exports__ = {};
 
-;// CONCATENATED MODULE: ./sources/injection/injection.scss
-// extracted by mini-css-extract-plugin
+// UNUSED EXPORTS: CountStarter
 
-;// CONCATENATED MODULE: ./sources/injection/content-script.ts
-
-console.log("injection starts..");
-class Logger {
-    constructor() {
-    }
-    log(message, ...optionalParams) {
+;// CONCATENATED MODULE: ./sources/Selection.ts
+class SelectionObj {
+    constructor(selection) {
+        this.text = "";
+        if (!selection) {
+            return;
+        }
+        this.text = selection.toString();
     }
 }
-const logger = new Logger();
-class InjectionStarter {
+
+;// CONCATENATED MODULE: ./sources/content-script/content-script.ts
+
+class CountStarter {
     constructor() {
-        chrome.runtime.connect({ name: "do-stuff" });
-        this.injectOpener();
-        //this.createIntersectionObserver();
-        //this.startMakingRoom();
-        //this.createMutationObserver();
-        console.log("injection loaded and started");
+        console.log('InjectionStarter started.');
+        // addEventListener version
+        document.addEventListener('selectionchange', () => {
+            var _a;
+            console.log("sending message with count: ", (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString().length);
+            chrome.runtime.sendMessage({ type: "selection", selection: new SelectionObj(window.getSelection()) }, function (response) {
+                console.log("response from background:", response.msg);
+            });
+        });
     }
-    injectOpener() {
-        //var imgURL = chrome.runtime.getURL("/images/floating-tin.png");
-        const opener = document.createElement("div");
-        opener.id = 'copycan-opener';
-        //opener.setAttribute('src', imgURL);
-        opener.className = 'copycan-opener';
-        //opener.alt = 'Copycan opener button';
-        document.body.append(opener);
-    }
-    ;
-    createInjectionContainer() {
-        const injectionContainer = document.createElement("div");
-        injectionContainer.className = "copycan-injection-panel";
-        injectionContainer.setAttribute("aria-hidden", "true");
-        injectionContainer.innerHTML = 'here it is. the injection.';
-        return injectionContainer;
-    }
-    start() {
-        const injectionContainer = this.createInjectionContainer();
-        const body = document.body;
-        body.append(injectionContainer);
-    }
-    ;
 }
-new InjectionStarter();
+new CountStarter();
 
 /******/ })()
 ;
