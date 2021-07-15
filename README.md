@@ -1,1 +1,1 @@
-# count
+# Chrome/Edge extension template
