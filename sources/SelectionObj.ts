@@ -1,11 +1,15 @@
+interface SelectionAbstract {
+	isCollapsed: boolean;
+	toString: ()=> string;
+}
+
 export class SelectionObj {
 	public text: string = "";
-	constructor(selection: Selection | null){
+	constructor(selection: SelectionAbstract | null, activeElement: Element | null){
 		if(!selection) {
-			return;
+			selection = {isCollapsed: true, toString: () => ''}
 		}
 		if(selection.isCollapsed) {
-			let activeElement = document.activeElement;
 			if(!activeElement){
 				console.log("no active element");
 			} else if(activeElement instanceof HTMLInputElement){
@@ -20,7 +24,7 @@ export class SelectionObj {
 			} else {
 				console.log(activeElement);
 			}
-		}else{
+		} else {
 			console.log(selection);
 			this.text = selection.toString();
 		}

@@ -7,9 +7,21 @@ export class CountStarter {
 
 	constructor() {
 		document.addEventListener('selectionchange', () => {
-			//console.log("sending message with count: ", window.getSelection()?.toString().length);
 			sendSelection();
 		});
+
+		let onfocusIn = function onFocusIn(event: FocusEvent) {
+			console.log("focused element", event.target);
+			sendSelection();
+		}
+		document.addEventListener('focusin', onfocusIn);
+
+		let onfocusOut = function onfocusOut(event: FocusEvent) {
+			console.log("blured element", event.target);
+			sendSelection();
+		}
+		document.addEventListener('focusout', onfocusOut);
+
 
 		let dispatchMessage = function dispatchMessage(message: RuntimeMessage
 			, sender: chrome.runtime.MessageSender
@@ -21,15 +33,17 @@ export class CountStarter {
 		}
 		chrome.runtime.onMessage.addListener(dispatchMessage);
 
-		let sendSelection = function sendSelection(){
-			let selection = window.getSelection();
-
+		let sendSelection = function sendSelection(isOnLoad = false){
+			let selection = isOnLoad ? null : window.getSelection();
 			chrome.runtime.sendMessage(
-				{type: MessageTypes.Selection, selection: new SelectionObj(selection)}
+				{type: MessageTypes.Selection, selection: new SelectionObj(selection, document.activeElement)}
 				, function(response: {msg: string}) {
 				//console.log("response from background:", response.msg);
 			});
 		}
+
+
+
 
 		function docReady(fn: Function) {
 			if(document.readyState === "complete" || document.readyState === "interactive") {
@@ -38,7 +52,7 @@ export class CountStarter {
 				document.addEventListener("DOMContentLoaded", () => {fn()});
 			}
 		}
-		docReady(sendSelection);
+		docReady(() => sendSelection(true));
 
 		// document.oninput = function(event: Event){
 		// 	let target = event.target;
