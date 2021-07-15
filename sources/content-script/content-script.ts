@@ -3,42 +3,26 @@ import {RuntimeMessage} from '../RuntimeMessage';
 import {SelectionObj} from '../SelectionObj';
 
 
-export class CountStarter {
+export class Starter {
 
 	constructor() {
-		document.addEventListener('selectionchange', () => {
-			sendSelection();
-		});
-
-		let onfocusIn = function onFocusIn(event: FocusEvent) {
-			console.log("focused element", event.target);
-			sendSelection();
-		}
-		document.addEventListener('focusin', onfocusIn);
-
-		let onfocusOut = function onfocusOut(event: FocusEvent) {
-			console.log("blured element", event.target);
-			sendSelection();
-		}
-		document.addEventListener('focusout', onfocusOut);
-
+		
 
 		let dispatchMessage = function dispatchMessage(message: RuntimeMessage
 			, sender: chrome.runtime.MessageSender
 			, sendResponse: (response?: any) => void) {
 
-			if(message.type == MessageTypes.SendSelection) {
-				sendSelection();
+			if(message.type == MessageTypes.SayHi) {
+				sayHi();
 			}
 		}
 		chrome.runtime.onMessage.addListener(dispatchMessage);
 
-		let sendSelection = function sendSelection(isOnLoad = false){
-			let selection = isOnLoad ? null : window.getSelection();
+		let sayHi = function sayHi(){
 			chrome.runtime.sendMessage(
-				{type: MessageTypes.Selection, selection: new SelectionObj(selection, document.activeElement)}
+				{type: MessageTypes.Hello, message: 'hello'}
 				, function(response: {msg: string}) {
-				//console.log("response from background:", response.msg);
+				console.log("response from background:", response.msg);
 			});
 		}
 
@@ -52,22 +36,10 @@ export class CountStarter {
 				document.addEventListener("DOMContentLoaded", () => {fn()});
 			}
 		}
-		docReady(() => sendSelection(true));
-
-		// document.oninput = function(event: Event){
-		// 	let target = event.target;
-		// 	if(target instanceof HTMLElement && target.contentEditable){
-		// 		chrome.runtime.sendMessage(
-		// 			{type: MessageTypes.Selection, selection: {text: target.innerText}});
-		// 	}
-		// }
-		// document.onfocus = function(event: Event) {
-		// 	console.log("focus: ", event);
-		// }
-
+		docReady(() => sayHi());
 	}
 }
-new CountStarter();
+new Starter();
 
 
 

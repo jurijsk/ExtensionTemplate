@@ -1,9 +1,9 @@
 {
-	"name": "copycan.code",
+	"name": "extension-template",
 	"private": true,
 	"sideEffects": false,
 	"version": "0.1.0",
-	"description": "Project Copycan",
+	"description": "Extension-template",
 	"scripts": {
 		"prebuild": "attrib -R build/*.* /s",
 		"build": "cross-env TS_NODE_PROJECT=\"build-scripts/tsconfig.json\" webpack --env production",

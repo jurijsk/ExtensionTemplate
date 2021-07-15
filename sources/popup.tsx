@@ -13,12 +13,9 @@ class PopupStater {
 		function render(){
 			App();
 		}
-
 		console.log('Popup class created.');
 		this.docReady(render);
 	}
-
-
 }
 new PopupStater();
 export {};
