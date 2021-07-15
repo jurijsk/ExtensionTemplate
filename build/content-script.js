@@ -2,55 +2,42 @@
 /******/ 	"use strict";
 var __webpack_exports__ = {};
 
-// UNUSED EXPORTS: CountStarter
+// UNUSED EXPORTS: Starter
 
 ;// CONCATENATED MODULE: ./sources/MessageTypes.ts
 var MessageTypes;
 (function (MessageTypes) {
-    MessageTypes["SendSelection"] = "SEND_SELECTION";
-    MessageTypes["Selection"] = "SELECTION";
-    MessageTypes["TabBlur"] = "TAB_BLUR";
+    MessageTypes["Hello"] = "Hello";
+    MessageTypes["SayHi"] = "SayHi";
 })(MessageTypes || (MessageTypes = {}));
-
-;// CONCATENATED MODULE: ./sources/SelectionObj.ts
-class SelectionObj {
-    constructor(selection) {
-        this.text = "";
-        if (!selection) {
-            return;
-        }
-        this.text = selection.toString();
-    }
-}
 
 ;// CONCATENATED MODULE: ./sources/content-script/content-script.ts
 
-
-class CountStarter {
+class Starter {
     constructor() {
-        document.addEventListener('selectionchange', () => {
-            var _a;
-            console.log("sending message with count: ", (_a = window.getSelection()) === null || _a === void 0 ? void 0 : _a.toString().length);
-            sendSelection();
-        });
         let dispatchMessage = function dispatchMessage(message, sender, sendResponse) {
-            if (message.type == MessageTypes.SendSelection) {
-                sendSelection();
+            if (message.type == MessageTypes.SayHi) {
+                sayHi();
             }
         };
         chrome.runtime.onMessage.addListener(dispatchMessage);
-        let sendSelection = function sendSelection() {
-            chrome.runtime.sendMessage({ type: MessageTypes.Selection, selection: new SelectionObj(window.getSelection()) }, function (response) {
+        let sayHi = function sayHi() {
+            chrome.runtime.sendMessage({ type: MessageTypes.Hello, message: 'hello' }, function (response) {
                 console.log("response from background:", response.msg);
             });
         };
-        window.addEventListener("blur", function () {
-            console.log("window.blur");
-            chrome.runtime.sendMessage({ type: MessageTypes.TabBlur });
-        });
+        function docReady(fn) {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+                setTimeout(fn, 1);
+            }
+            else {
+                document.addEventListener("DOMContentLoaded", () => { fn(); });
+            }
+        }
+        docReady(() => sayHi());
     }
 }
-new CountStarter();
+new Starter();
 
 /******/ })()
 ;

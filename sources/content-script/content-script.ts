@@ -1,6 +1,4 @@
 import {MessageTypes} from '../MessageTypes';
-import {RuntimeMessage} from '../RuntimeMessage';
-import {SelectionObj} from '../SelectionObj';
 
 
 export class Starter {
@@ -8,7 +6,7 @@ export class Starter {
 	constructor() {
 		
 
-		let dispatchMessage = function dispatchMessage(message: RuntimeMessage
+		let dispatchMessage = function dispatchMessage(message: any
 			, sender: chrome.runtime.MessageSender
 			, sendResponse: (response?: any) => void) {
 
@@ -25,9 +23,6 @@ export class Starter {
 				console.log("response from background:", response.msg);
 			});
 		}
-
-
-
 
 		function docReady(fn: Function) {
 			if(document.readyState === "complete" || document.readyState === "interactive") {
