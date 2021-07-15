@@ -11,18 +11,24 @@
 <body>
 	<div id="root">
 		<div>
-			<input type="radio" id="counterTypeCharacters" checked name="counter" value="characters">
+			<input type="radio" id="counterTypeTweetsCharacters" checked name="counter" value="tweets_characters">
+			<label for="counterTypeWords">Tweets|characters</label> <span class="counter">2|230</span>
+		</div>
+		<div>
+			<input type="radio" id="counterTypeCharacters" name="counter" value="characters">
 			<label for="counterTypeCharacters">Characters:</label> <span class="counter">230</span>
+			<br/>
+			show badge after <input class="tiny" type="text" value="20"/> characters
 		</div>
 		<div>
 			<input type="radio" id="counterTypeWords" name="counter" value="words">
 			<label for="counterTypeWords">Words</label> <span class="counter">5</span>
 		</div>
+
 		<div>
-			<input type="radio" id="contactChoice1" name="counter" value="tweets_characters">
-			<label for="contactChoice1">Tweets|characters</label> <span class="counter">2|230</span>
+			<input type="checkbox" id="countTextFields" checked name="counter" value="words">
+			<label for="counterTypeWords">Count text in input fields</label> <span class="counter">5</span>
 		</div>
-		it does not yet work
 	</div>
 </body>
 

@@ -7,7 +7,7 @@ export class CountStarter {
 
 	constructor() {
 		document.addEventListener('selectionchange', () => {
-			console.log("sending message with count: ", window.getSelection()?.toString().length);
+			//console.log("sending message with count: ", window.getSelection()?.toString().length);
 			sendSelection();
 		});
 
@@ -22,10 +22,12 @@ export class CountStarter {
 		chrome.runtime.onMessage.addListener(dispatchMessage);
 
 		let sendSelection = function sendSelection(){
+			let selection = window.getSelection();
+
 			chrome.runtime.sendMessage(
-				{type: MessageTypes.Selection, selection: new SelectionObj(window.getSelection())}
+				{type: MessageTypes.Selection, selection: new SelectionObj(selection)}
 				, function(response: {msg: string}) {
-				console.log("response from background:", response.msg);
+				//console.log("response from background:", response.msg);
 			});
 		}
 
@@ -36,7 +38,19 @@ export class CountStarter {
 				document.addEventListener("DOMContentLoaded", () => {fn()});
 			}
 		}
-		docReady(sendSelection);	
+		docReady(sendSelection);
+
+		// document.oninput = function(event: Event){
+		// 	let target = event.target;
+		// 	if(target instanceof HTMLElement && target.contentEditable){
+		// 		chrome.runtime.sendMessage(
+		// 			{type: MessageTypes.Selection, selection: {text: target.innerText}});
+		// 	}
+		// }
+		// document.onfocus = function(event: Event) {
+		// 	console.log("focus: ", event);
+		// }
+
 	}
 }
 new CountStarter();
